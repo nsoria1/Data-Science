@@ -5,9 +5,9 @@ library(randomForest) #Random Forest creation
 library(Matrix) #To one hot variables
 library(xgboost) #Load the XGBoost package
 
-# Variables
-#file <- 'C:/Users/nsoria/Google Drive/Trabajo/AMS Globales/Until_January.csv'
-file <- '/home/nicolas/Documents/Development/Machine Learning/Resolution Prediction/Until_January.csv'
+# Deinfe file path
+file <- 'C:/Users/nsoria/Documents/Data Science/Resolution Prediction/Until_January.csv'
+#file <- '/home/nicolas/Documents/Development/Machine Learning/Resolution Prediction/Until_January.csv'
 
 # Load dataset
 tickets <- read.csv(file, header=TRUE, sep=';', dec=",", stringsAsFactors = FALSE)
@@ -83,7 +83,7 @@ tickets$Breached.Code <- NULL
 tickets$Group.manual.input <- NULL
 tickets$Detail.Group.by.CI <- NULL
 tickets$Detail.Group.by.AG...CI <- NULL
-#tickets$IRIS.Region...Site <- NULL
+tickets$IRIS.Region...Site <- NULL
 tickets$IRIS.Assigned.Group <- NULL
 tickets$Group.per.formula <- NULL
 tickets$Service.Type <- NULL
@@ -159,15 +159,11 @@ test <- tickets[-spl,]
 # Set seed to reproduce it
 set.seed(123)
 
-######  Create the classification tree
+################################################ Decision Tree Algorithm
+
+# Create a decision tree model based on the train information.
 model_rp <- rpart(train$Ticket_Resolution ~ ., data = train, method="class", 
                control = rpart.control(minsplit = 1, minbucket = 1, cp = 0.001))
-
-###### Create a Random Forest
-model_rf <- randomForest(train$Tickets_Resolution ~., data = train, importance = TRUE, ntree = 10)
-
-# Variable importance
-varImpPlot(model_rf)
 
 # Plot it for visualization
 fancyRpartPlot(model_rp)
@@ -175,7 +171,24 @@ fancyRpartPlot(model_rp)
 # Make a prediction
 prediction <- predict(model_rp, test, type = "class")
 
-###### XGBoost Model
+# Compare outcome with the test set of data
+table(test$Ticket_Resolution, prediction)
+
+################################################ Random Forest Algorithm
+
+# Create a Random Forest model
+model_rf <- randomForest(train$Ticket_Resolution ~., data = train, importance = TRUE, ntree = 10)
+
+# Plot variable importance for visualization
+varImpPlot(model_rf)
+
+# Make a prediction
+prediction <- predict(model_rf, test, type = "class")
+
+# Compare outcome with the test set of data
+table(test$Ticket_Resolution, prediction)
+
+################################################ XGBoost Model Algorithm
 
 # Create separate vectors of our outcome variable for both our train and test sets
 # We'll use these to train and test our model later
@@ -183,8 +196,8 @@ train.label <- ifelse(train$Ticket_Resolution == "OK", 1, 0)
 test.label <- ifelse(test$Ticket_Resolution == "OK", 1, 0)
 
 # Create sparse matrixes and perform One-Hot Encoding to create dummy variables
-dtrain  <- sparse.model.matrix(Ticket_Resolution ~ .-1, data=train)
-dtest   <- sparse.model.matrix(Ticket_Resolution ~ .-1, data=test)
+dtrain <- sparse.model.matrix(Ticket_Resolution ~ .-1, data=train)
+dtest <- sparse.model.matrix(Ticket_Resolution ~ .-1, data=test)
 
 # Set our hyperparameters
 param <- list(objective   = "binary:logistic",
