@@ -20,7 +20,7 @@ model_stl <- stl(ts_fin, s.window = "periodic")
 #model_arima <- auto.arima(ts_fin)
 
 # Predict the next 3 bi weeks of tickets
-pred <- forecast(model, h = 5)
+pred <- forecast(model_stl, h = 5)
 
 # Round values to better accuracy
 pred$mean <- round(pred$mean)
