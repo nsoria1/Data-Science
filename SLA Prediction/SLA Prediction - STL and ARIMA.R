@@ -29,7 +29,7 @@ pred <- forecast(model_stl, h = 5)
 df1 <- fortify(pred) %>% as_tibble()
 
 # Convert ts decimal time to Date class
-df1$Date <- as.Date(date_decimal(df1$Index), "%Y-%m-%d")
+df1$Date <- as.Date((df1$Index), "%Y-%m-%d")
 
 # Remove Index column and rename other columns
 # Select only data pts after 2017/10
