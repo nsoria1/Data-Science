@@ -35,7 +35,7 @@ df1$Date <- as.Date((df1$Index), "%Y-%m-%d")
 # Select only data pts after 2017/10
 df1 <- df1 %>% 
   select(-Index) %>% 
-  filter(Date >= as.Date("2017-10-01")) %>% 
+  filter(Date >= as.Date("2017-5-01")) %>% 
   rename("Low95" = "Lo 95",
          "Low80" = "Lo 80",
          "High95" = "Hi 95",
@@ -47,7 +47,7 @@ lastNonNAinData <- max(which(complete.cases(df1$Data)))
 df1[lastNonNAinData, !(colnames(df1) %in% c("Data", "Fitted", "Date"))] <- df1$Data[lastNonNAinData]
 
 plt1 <- ggplot(df1, aes(x = Date)) +   
-  ggtitle("Ticket amount") +
+  ggtitle("SLA % Forecasting") +
   xlab("Time frame") + ylab("Quantity") +
   geom_ribbon(aes(ymin = Low95, ymax = High95, fill = "95%")) +
   geom_ribbon(aes(ymin = Low80, ymax = High80, fill = "80%")) +
