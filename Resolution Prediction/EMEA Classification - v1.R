@@ -6,7 +6,7 @@ library(Matrix) #To one hot variables
 library(xgboost) #Load the XGBoost package
 
 # Deinfe file path
-file <- 'C:/Users/nsoria/Documents/Data Science/Resolution Prediction/Until_January.csv'
+file <- 'C:/Users/nsoria/Documents/Development/Data Science/Resolution Prediction/Until_January.csv'
 #file <- '/home/nicolas/Documents/Development/Machine Learning/Resolution Prediction/Until_January.csv'
 
 # Load dataset

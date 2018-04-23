@@ -6,7 +6,7 @@ library(scales)
 library(ggfortify)
 
 # Load historical SLA definitions
-bwi <- read.csv(file="C:/Users/nsoria/Documents/Data Science/SLA Prediction/TEC_BWI.csv", header=TRUE, sep=';', dec=",")
+bwi <- read.csv(file="C:/Users/nsoria/Documents/Development/Data Science/SLA Prediction/TEC_BWI.csv", header=TRUE, sep=';', dec=",")
 
 # Create time series object
 ts_bwi <- ts(bwi$SLA, frequency = 12, start = c(2015,1))

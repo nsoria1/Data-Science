@@ -6,7 +6,7 @@ library(scales)
 library(ggfortify)
 
 # Load dataset
-emea <- read.csv(file="C:/Users/nsoria/Documents/Data Science/Ticket Prediction/812_Finanzas.csv", header=TRUE, sep=';', dec=",")
+emea <- read.csv(file="C:/Users/nsoria/Documents/Development/Data Science/Ticket Prediction/812_Finanzas.csv", header=TRUE, sep=';', dec=",")
 
 # Create time series object
 ts_fin <- ts(emea$Valor, deltat = 1/24, start = c(2015, 1))
