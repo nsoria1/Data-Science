@@ -25,10 +25,10 @@ tickets <- tickets[!tickets$Funct.Area=="TECH LEAD",]
 tickets <- tickets[!tickets$IRIS.Priority=="L",]
 
 # Adding quarter information to the tickets
-tickets$Quarter <- ifelse(tickets$Month.Submitted <= 4, "Quarter 1", 
-                          ifelse(tickets$Month.Submitted <= 8, "Quarter 2", "Quarter 3"))
-tickets$Date_Submitted <- as.Date(with(tickets, 
-                          paste(tickets$Year.Submitted, tickets$Month.Submitted, tickets$Day.Submitted,sep="-")), "%Y-%m-%d")
+#tickets$Quarter <- ifelse(tickets$Month.Submitted <= 4, "Quarter 1", 
+#                          ifelse(tickets$Month.Submitted <= 8, "Quarter 2", "Quarter 3"))
+#tickets$Date_Submitted <- as.Date(with(tickets, 
+#                          paste(tickets$Year.Submitted, tickets$Month.Submitted, tickets$Day.Submitted,sep="-")), "%Y-%m-%d")
 
 # Drop features that are not required
 tickets$Closed.in.the.month <- NULL
@@ -49,7 +49,7 @@ tickets$Networkdays.correction <- NULL
 tickets$Period.YY.MM <- NULL
 tickets$Closed.Within.SLA..4P. <- NULL
 tickets$SOW.WO <- NULL
-tickets$IRIS.Incident.Number <- NULL
+#tickets$IRIS.Incident.Number <- NULL
 tickets$TICKET.SUMMARY <- NULL
 tickets$SLA.Defect.Category <- NULL
 tickets$IRIS.Root.cause.category <- NULL
@@ -162,8 +162,7 @@ set.seed(123)
 ################################################ Decision Tree Algorithm
 
 # Create a decision tree model based on the train information.
-model_rp <- rpart(train$Ticket_Resolution ~ ., data = train, method="class", 
-               control = rpart.control(minsplit = 1, minbucket = 1, cp = 0.001))
+model_rp <- rpart(train$Ticket_Resolution ~ ., data = train, method="class", control = rpart.control(minsplit = 1, minbucket = 1, cp = 0.001))
 
 # Plot it for visualization
 fancyRpartPlot(model_rp)
