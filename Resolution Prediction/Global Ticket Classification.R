@@ -156,6 +156,12 @@ spl <- sort(sample(nrow(tickets), nrow(tickets)*.7))
 train <- tickets[spl,]
 test <- tickets[-spl,]
 
+# Copy dataframe for visualization
+test_2 <- test
+train_2 <- train
+test$IRIS.Incident.Number <- NULL
+train$IRIS.Incident.Number <- NULL
+
 # Set seed to reproduce it
 set.seed(123)
 
@@ -165,13 +171,21 @@ set.seed(123)
 model_rp <- rpart(train$Ticket_Resolution ~ ., data = train, method="class", control = rpart.control(minsplit = 1, minbucket = 1, cp = 0.001))
 
 # Plot it for visualization
-fancyRpartPlot(model_rp)
+#fancyRpartPlot(model_rp)
 
 # Make a prediction
 prediction <- predict(model_rp, test, type = "class")
 
 # Compare outcome with the test set of data
-table(test$Ticket_Resolution, prediction)
+#table(test$Ticket_Resolution, prediction)
+
+# Prepare spreadsheet outcome
+train_2$Prediction <- NA
+test_2$Prediction <- prediction
+new_df <- rbind(test_2, train_2)
+
+# Write CSV on folder
+write.csv(new_df, "C:/Users/nsoria/Downloads/ticket_classification_results.csv")
 
 ################################################ Random Forest Algorithm
 
@@ -183,6 +197,9 @@ varImpPlot(model_rf)
 
 # Make a prediction
 prediction <- predict(model_rf, test, type = "class")
+
+# Merge prediction with dataframe
+test_2$Prediction <- prediction
 
 # Compare outcome with the test set of data
 table(test$Ticket_Resolution, prediction)
