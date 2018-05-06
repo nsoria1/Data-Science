@@ -26,6 +26,7 @@ pred <- forecast(model_stl, h = 5)
 pred$mean <- round(pred$mean)
 pred$upper <- round(pred$upper)
 pred$lower <- round(pred$lower)
+pred$fitted <- round(pred$fitted)
 
 # Convert pred from list to data frame object
 df1 <- fortify(pred) %>% as_tibble()
