@@ -184,8 +184,8 @@ train_2$Prediction <- NA
 test_2$Prediction <- prediction
 new_df <- rbind(test_2, train_2)
 
-# Write CSV on folder
-write.csv(new_df, "C:/Users/nsoria/Downloads/ticket_classification_results.csv")
+# Download predictions into CSV
+write.csv(new_df, "C:/Users/nsoria/Documents/Development/Data Science/Visualization/Ticket_Classification_v2.csv")
 
 ################################################ Random Forest Algorithm
 

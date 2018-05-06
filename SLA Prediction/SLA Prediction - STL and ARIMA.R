@@ -11,9 +11,14 @@ bwi <- read.csv(file="C:/Users/nsoria/Documents/Development/Data Science/SLA Pre
 # Create time series object
 ts_bwi <- ts(bwi$SLA, frequency = 12, start = c(2015,1))
 
+# Defining predictions bounds
+a <- 0
+b <- 1
+y <- log((ts_bwi-a)/(b-ts_bwi))
+
 ############################################ STL Model Algorithm
 # Pull out the seasonal, trend, and irregular components from the time series
-model_stl <- stl(ts_bwi, s.window = "periodic")
+model_stl <- stl(y, s.window = "periodic")
 
 ############################################ ARIMA Model Algorithm
 # Pull out the seasonal, trend, and irregular components from the time series
@@ -21,6 +26,13 @@ model_stl <- stl(ts_bwi, s.window = "periodic")
 
 # Predict the next 5 month of SLA (STL)
 pred <- forecast(model_stl, h = 5)
+
+# Adjusting bounds
+pred$mean <- (b-a)*exp(pred$mean)/(1+exp(pred$mean)) + a
+pred$lower <- (b-a)*exp(pred$lower)/(1+exp(pred$lower)) + a
+pred$upper <- (b-a)*exp(pred$upper)/(1+exp(pred$upper)) + a
+pred$fitted <- (b-a)*exp(pred$fitted)/(1+exp(pred$fitted)) + a
+pred$x <- ts_bwi
 
 # Predict the next 5 month of SLA (ARIMA)
 #pred <- forecast(model_arima, h = 5)
@@ -30,6 +42,9 @@ df1 <- fortify(pred) %>% as_tibble()
 
 # Convert ts decimal time to Date class
 df1$Date <- as.Date((df1$Index), "%Y-%m-%d")
+
+# Download predictions into CSV
+write.csv(df1, "C:/Users/nsoria/Documents/Development/Data Science/Visualization/SLA_Prediction_v2.csv")
 
 # Remove Index column and rename other columns
 # Select only data pts after 2017/10

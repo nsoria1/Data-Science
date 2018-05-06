@@ -6,7 +6,7 @@ library(scales)
 library(ggfortify)
 
 # Load dataset
-emea <- read.csv(file="C:/Users/nsoria/Documents/Development/Data Science/Ticket Prediction/812_Finanzas.csv", header=TRUE, sep=';', dec=",")
+emea <- read.csv(file="C:/Users/nsoria/Documents/Development/Data Science/Ticket Amount Prediction/812_Finanzas.csv", header=TRUE, sep=';', dec=",")
 
 # Create time series object
 ts_fin <- ts(emea$Valor, deltat = 1/24, start = c(2015, 1))
@@ -32,6 +32,9 @@ df1 <- fortify(pred) %>% as_tibble()
 
 # Convert ts decimal time to Date class
 df1$Date <- as.Date(date_decimal(df1$Index), "%Y-%m-%d")
+
+# Download predictions into CSV
+write.csv(df1, "C:/Users/nsoria/Documents/Development/Data Science/Visualization/Ticket_Prediction_v2.csv")
 
 # Remove Index column and rename other columns
 # Select only data pts after 2017/10
