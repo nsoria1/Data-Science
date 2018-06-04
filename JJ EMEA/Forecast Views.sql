@@ -45,14 +45,20 @@ order BY
 /* Customer forecasting */
 select
 	jj_total.customer_id,
-	jj_total.order_date,
-	sum( jj_total.item_price_trx_cur )
+	YEAR(jj_total.order_date) as year,
+	MONTH(jj_total.order_date) as month,
+	sum( jj_total.item_price_trx_cur ) total_sales
 from
 	jj_total
+WHERE
+	jj_total.customer_id = '8141271'
 group by
-	jj_total.order_date,
+	YEAR(jj_total.order_date),
+	MONTH(jj_total.order_date),
 	jj_total.customer_id
-order by
-	jj_total.order_date desc;
+order BY
+	jj_total.customer_id desc,
+	YEAR(jj_total.order_date) desc,
+	MONTH(jj_total.order_date) desc;
 	
 ------------------------------
